@@ -17,7 +17,7 @@ class MappedUnmappedCircuit:
     for gate_idx in range(len(self.lcircuit)):
       gate = self.lcircuit[gate_idx]
       if len(gate.qubits)==1:
-        qubit = gate_get_qubit(self.lcircuit[gate_idx], 0)
+        qubit = gate_get_qubit(self.lcircuit, self.lcircuit[gate_idx], 0)
         self.unary_gates[qubit].append(gate_idx)
 
     # initialize map from logical to physical qubits:
@@ -82,7 +82,8 @@ class MappedUnmappedCircuit:
       if gates[0] > gate_idx:
         break # assuming gates is ordered, we have processed all unary gates before g
       gate = gates.pop(0) # this removes gates[0] also from self.unary_gates[lqubit]
-      newgate = gate_set_qubit(self.lcircuit[gate], pqubit, self.num_pqubits)
+      newgate = gate_set_qubit(self.lcircuit[gate], pqubit, self.mapped_circuit.qregs[0])
+      
       self.mapped_circuit.append(newgate)
       if self.verbose > 2:
         print(f"...applying unary gate #{gate_idx} ({newgate.operation.name}) to l{lqubit} on p{pqubit}")
@@ -196,8 +197,8 @@ class MappedUnmappedCircuit:
         unmapped_circuit = QuantumCircuit(self.num_lqubits,self.num_lqubits) # or 0 classical?
         for gate in self.mapped_circuit:
             if (gate.operation.name == "swap"):
-                q1 = gate_get_qubit(gate, 0)
-                q2 = gate_get_qubit(gate, 1)
+                q1 = gate_get_qubit(self.lcircuit, gate, 0)
+                q2 = gate_get_qubit(self.lcircuit, gate, 1)
                 # if presented we extract the earlier swapped value:
                 if (q1 not in self.reverse_init_mapping):
                   # q1 is an ancillary qubit:
@@ -213,8 +214,8 @@ class MappedUnmappedCircuit:
                   self.reverse_init_mapping[q2] = tmp
 
             elif(gate.operation.name == "cx"):
-                q1 = gate_get_qubit(gate, 0)
-                q2 = gate_get_qubit(gate, 1)
+                q1 = gate_get_qubit(self.lcircuit, gate, 0)
+                q2 = gate_get_qubit(self.lcircuit, gate, 1)
                 # we update the qubit in the gate:
                 newq1 = self.reverse_init_mapping[q1]
                 newq2 = self.reverse_init_mapping[q2]
@@ -222,9 +223,9 @@ class MappedUnmappedCircuit:
             else:
                 # we update the qubit in the gate:
                 assert len(gate.qubits) == 1
-                q = gate_get_qubit(gate, 0)
+                q = gate_get_qubit(self.lcircuit, gate, 0)
                 newq = self.reverse_init_mapping[q]
-                newgate = gate_set_qubit(gate, newq, self.num_lqubits)
+                newgate = gate_set_qubit(gate, newq)
                 unmapped_circuit.append(newgate)
         return unmapped_circuit
   

@@ -1,22 +1,10 @@
 # (C) CC-BY Irfansha Shaik, Jaco van de Pol, Aarhus University, 2023
 
-from qiskit.providers.fake_provider import FakeTokyo
-from qiskit.providers.fake_provider import FakeTenerife
-from qiskit.providers.fake_provider import FakeMelbourne
 import rustworkx as rx
 
 def platform(platform, bidirectional, verbose=0):
     if platform in ("tenerife","melbourne","tokyo"):
-      if platform == "tokyo":
-        arch = FakeTokyo()
-      elif platform == "tenerife":
-        arch = FakeTenerife()
-      elif platform == "melbourne":
-        arch = FakeMelbourne()
-      num_physical_qubits = arch.configuration().n_qubits
-      coupling_map = arch.configuration().coupling_map
-      if verbose > 0:
-        print("provider from qiskit: ",arch.configuration().backend_name)
+      raise Exception("old platform no longer supported")
 
     else:
       if platform == "rigetti-8":

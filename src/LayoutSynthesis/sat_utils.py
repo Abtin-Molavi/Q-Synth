@@ -125,8 +125,8 @@ def compute_predecessors(self):
       if (len(gate.qubits) == 2):
         # for now asserting every 2 qubit operation is "cx":
         assert(gate.operation.name == "cx")
-        ctrl = gate.qubits[0].index
-        data = gate.qubits[1].index
+        ctrl = gate.qubits[0]._index
+        data = gate.qubits[1]._index
         # getting qubit pairs:
         # assuming bidirectional for coupling graph:
         if ((ctrl, data) not in self.lq_pair_list and (data, ctrl) not in self.lq_pair_list):
@@ -162,8 +162,8 @@ def compute_predecessors_successors(self):
       if (len(gate.qubits) == 2):
         # for now asserting every 2 qubit operation is "cx":
         assert(gate.operation.name == "cx")
-        ctrl = gate.qubits[0].index
-        data = gate.qubits[1].index
+        ctrl = gate.qubits[0]._index
+        data = gate.qubits[1]._index
         # getting qubit pairs:
         # assuming bidirectional for coupling graph:
         if ((ctrl, data) not in self.lq_pair_list and (data, ctrl) not in self.lq_pair_list):

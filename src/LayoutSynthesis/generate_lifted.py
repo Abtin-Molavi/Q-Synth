@@ -50,8 +50,8 @@ class GenerateLifted:
   def used_in_cnot(self):
     cnot_lqubits = set()
     for cnot in (self.list_cx_gates):
-      ctrl = gate_get_qubit(self.logical_circuit[cnot],0)
-      data = gate_get_qubit(self.logical_circuit[cnot],1)
+      ctrl = gate_get_qubit(self.logical_circuit, self.logical_circuit[cnot],0)
+      data = gate_get_qubit(self.logical_circuit, self.logical_circuit[cnot],1)
       cnot_lqubits.add(ctrl)
       cnot_lqubits.add(data)
     return sorted(cnot_lqubits)
@@ -96,8 +96,8 @@ class GenerateLifted:
 
     self.pddl_lines.append("  ;; listing cnots with their logical qubits (and dependencies)\n")
     for cx_gate in self.list_cx_gates:
-      ctrl = gate_get_qubit(self.logical_circuit[cx_gate], 0)
-      data = gate_get_qubit(self.logical_circuit[cx_gate], 1)
+      ctrl = gate_get_qubit(self.logical_circuit, self.logical_circuit[cx_gate], 0)
+      data = gate_get_qubit(self.logical_circuit, self.logical_circuit[cx_gate], 1)
       cur_str = f"  (cnot l{ctrl} l{data} g{cx_gate} "
 
       if (self.args.relaxed == 0):

@@ -47,9 +47,9 @@ class CircuitExtractionSAT:
           # also computing mapped physical qubits:
           cur_gate = sat_instance.logical_circuit[sat_instance.list_cx_gates[cur_cnot_index]]
 
-          l1 = gate_get_qubit(cur_gate,0)
+          l1 = gate_get_qubit(sat_instance.logical_circuit, cur_gate,0)
           l1_physical_vars = sat_instance.blocks[t].mlvars[l1]
-          l2 = gate_get_qubit(cur_gate,1)
+          l2 = gate_get_qubit(sat_instance.logical_circuit, cur_gate,1)
           l2_physical_vars = sat_instance.blocks[t].mlvars[l2]
 
           # the var which is true is the mapped physical qubit:

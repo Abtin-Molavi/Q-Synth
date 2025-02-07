@@ -20,7 +20,7 @@ class CircuitExtractionGlobal:
           idx = -1
           for i in range(0,len(circuit)):
             if (i not in gates_used and circuit[i].operation.name == 'cx' and
-                gate_get_qubit(circuit[i], 0) == l1 and gate_get_qubit(circuit[i], 1) == l2):
+                gate_get_qubit(circuit, circuit[i], 0) == l1 and gate_get_qubit(circuit, circuit[i], 1) == l2):
               idx = i
               break # found the gate at idx
           if idx == -1:

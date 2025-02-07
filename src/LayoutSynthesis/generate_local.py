@@ -169,8 +169,8 @@ class GenerateLocal:
 
     # for each cnot action, we generate a partially grounded locally dependent action:
     for gate_idx, deps in self.cnot_depends.items():
-      ctrl = gate_get_qubit(self.logical_circuit[gate_idx],0)
-      data = gate_get_qubit(self.logical_circuit[gate_idx],1)
+      ctrl = gate_get_qubit(self.logical_circuit, self.logical_circuit[gate_idx],0)
+      data = gate_get_qubit(self.logical_circuit, self.logical_circuit[gate_idx],1)
 
       if self.args.relaxed == 0:
         gen_strict_cnot_action(ctrl, data, gate_idx, deps)
@@ -222,8 +222,8 @@ class GenerateLocal:
   def used_in_cnot(self):
     cnot_lqubits = set()
     for cnot in (self.list_cx_gates):
-      ctrl = gate_get_qubit(self.logical_circuit[cnot],0)
-      data = gate_get_qubit(self.logical_circuit[cnot],1)
+      ctrl = gate_get_qubit(self.logical_circuit, self.logical_circuit[cnot],0)
+      data = gate_get_qubit(self.logical_circuit, self.logical_circuit[cnot],1)
       cnot_lqubits.add(ctrl)
       cnot_lqubits.add(data)
     return sorted(cnot_lqubits)

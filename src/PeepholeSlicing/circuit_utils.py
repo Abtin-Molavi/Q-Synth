@@ -50,15 +50,15 @@ def remove_zero_cost_swaps(circuit, num_qubits):
 
   for gate in circuit:
     if (gate.operation.name == "swap"):
-      q1 = gate_get_qubit(gate, 0)
-      q2 = gate_get_qubit(gate, 1)
+      q1 = gate_get_qubit(circuit, gate, 0)
+      q2 = gate_get_qubit(circuit, gate, 1)
 
       tmp = mapping[q1]
       mapping[q1] = mapping[q2]
       mapping[q2] = tmp
     elif(gate.operation.name == "cx"):
-      q1 = gate_get_qubit(gate, 0)
-      q2 = gate_get_qubit(gate, 1)
+      q1 = gate_get_qubit(circuit, gate, 0)
+      q2 = gate_get_qubit(circuit, gate, 1)
       # we update the qubit in the gate:
       newq1 = mapping[q1]
       newq2 = mapping[q2]
@@ -66,7 +66,7 @@ def remove_zero_cost_swaps(circuit, num_qubits):
     else:
       # we update the qubit in the gate:
       assert len(gate.qubits) == 1
-      q = gate_get_qubit(gate, 0)
+      q = gate_get_qubit(circuit, gate, 0)
       newq = mapping[q]
       newgate = gate_set_qubit(gate, newq, num_qubits)
       no_swaps_circuit.append(newgate)
@@ -75,7 +75,7 @@ def remove_zero_cost_swaps(circuit, num_qubits):
 class CircuitUtils:
 
   def gate_get_qubit(self, gate, bit_idx):
-    return gate.qubits[bit_idx].index
+    return self.circuit.find_bit(gate.qubits[bit_idx]).index
 
   def extract_top_slice(self, allowed_gates):
     #print("Top slice extraction")

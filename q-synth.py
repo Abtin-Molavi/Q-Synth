@@ -29,7 +29,7 @@ if __name__ == '__main__':
                                  cycle-5    = cycle of 5 qubits (good for testing use of ancillary bits)
                                  grid-{4,5,6,7,8}  = nxn grid (standard platforms for experiments)
                                  test       = test platform (can be anything for experimentation)
-                               '''), default = "melbourne")
+                               '''), default = "sycamore")
   layout_parser.add_argument("-b", "--bidirectional", type=int, help="Make coupling bidirectional [0/1/2]: 0=no, 1=yes (default), 2=use H-CNOT-H" ,default = 1)
   layout_parser.add_argument("--symmetry_breaking", type=int, help="Compute Isomorphic physical qubits (symmetry breaking to do) [0/1/2]: 0=no (default), 1=yes (on first qubit), 2=yes (on first 2 qubits)" ,default = 0)
   layout_parser.add_argument("--distance_sb", type=int, help=textwrap.dedent('''\

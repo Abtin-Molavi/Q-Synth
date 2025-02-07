@@ -4,16 +4,13 @@ from qiskit import QuantumRegister
 from qiskit.circuit import Qubit
 
 # Return logical qubit bit_idx of gate gate_idx
-# TODO: find the proper way to do this using find_bit
-def gate_get_qubit(gate, bit_idx):
-    return gate.qubits[bit_idx].index
+def gate_get_qubit(circuit, gate, bit_idx):
+    return circuit.find_bit(gate.qubits[bit_idx]).index
 
-# Return a new gate with a modified qubit
-# TODO: find the proper way to do this
-def gate_set_qubit(gate, bit_idx, num_qubits):
-  newgate = gate.copy()
-  newgate.qubits = (Qubit(QuantumRegister(num_qubits, 'q'), bit_idx),)
-  return newgate
+def gate_set_qubit(gate, qubit_index, register):
+    q = Qubit(register, qubit_index)
+    newgate = gate.replace(qubits=[q])
+    return newgate
 
 # return a list of all CNOT gates
 def all_cx_gates(circuit):
@@ -22,7 +19,6 @@ def all_cx_gates(circuit):
     if (circuit[gate_idx].operation.name == "cx"):
       list_cx_gates.append(gate_idx)
   return list_cx_gates
-
 # compute and return strict dependencies between CNOT gates (according to standard DAG)
 def strict_dependencies(circuit, verbose=0):
   # for each logical qubit, we maintain the current dependency
@@ -43,8 +39,8 @@ def strict_dependencies(circuit, verbose=0):
       if gate.operation.name != "cx":
         print(f"Error: currently, Q-Synth assumes CNOT is the only binary operators, found '{gate.operation.name}'")
         exit(-1)
-      ctrl = gate_get_qubit(gate,0)
-      data = gate_get_qubit(gate,1)
+      ctrl = gate_get_qubit(circuit, gate,0)
+      data = gate_get_qubit(circuit, gate,1)
       # first gathering current dependency:
       cnot_depends[gate_idx] = (current_dependency[ctrl], current_dependency[data])
       # updating current dependency on both input qubits:

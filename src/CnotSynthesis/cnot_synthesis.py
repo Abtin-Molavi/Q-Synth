@@ -108,8 +108,8 @@ def equivalence_check(org_circuit, opt_circuit, qubit_map, options):
 def couping_graph_check(circuit, coupling_map, verbose=None): 
   for gate in circuit:
     if (len(gate.qubits) == 2):
-      q1 = gate_get_qubit(gate, 0)
-      q2 = gate_get_qubit(gate, 1)
+      q1 = gate_get_qubit(circuit, gate, 0)
+      q2 = gate_get_qubit(circuit, gate, 1)
       if ([q1,q2] not in coupling_map):
         print("Error: Cnot connections are NOT consistent with the coupling graph")
         exit(-1)

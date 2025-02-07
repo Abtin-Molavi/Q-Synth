@@ -134,7 +134,7 @@ def replace_swaps_with_3cx(circuit, check_equivalence=0, verbose=0):
   for gate in circuit:
     if (gate.operation.name == "swap"):
       # decomposing swap to 3 cnots:
-      q1, q2 = gate_get_qubit(gate, 0), gate_get_qubit(gate, 1)
+      q1, q2 = gate_get_qubit(circuit, gate, 0), gate_get_qubit(circuit, gate, 1)
       swap_free_circuit.cx(q1,q2)
       swap_free_circuit.cx(q2,q1)
       swap_free_circuit.cx(q1,q2)
